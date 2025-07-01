@@ -14,7 +14,7 @@ A real-time chat application built with Socket.IO, Node.js, and MySQL, allowing 
 ### 📦 Setting up
 1. Clone repository
 2. Install dependencies
-3. set up .env file and create a uploads folder
+3. Set up .env file and create a uploads folder in the backend folder 
 4. Set up database
 5. Run commands
 ```bash
