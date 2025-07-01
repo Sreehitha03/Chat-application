@@ -20,17 +20,17 @@ const App = () => {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        // Basic token expiration check (JWT 'exp' is in seconds, Date.now() is ms)
+      
         if (decodedToken.exp * 1000 < Date.now()) {
           console.warn("Token expired. Logging out.");
           localStorage.removeItem("token");
-          setCurrentUser(null); // Explicitly set user to null
+          setCurrentUser(null); 
           // Disconnect socket if it's connected and token is invalid
           if (socket.current) {
             socket.current.disconnect();
             socket.current = null;
           }
-          return; // Exit early as token is invalid
+          return; 
         }
 
         // Token is valid and not expired, set currentUser
@@ -38,7 +38,7 @@ const App = () => {
           id: decodedToken.userId,
           username: decodedToken.username,
           email: decodedToken.email,
-          avatar: decodedToken.avatar || "./avatar.png", // Ensure avatar is pulled if available or use default
+          avatar: decodedToken.avatar || "./avatar.png", 
         };
         setCurrentUser(userData);
 
@@ -71,7 +71,7 @@ const App = () => {
       } catch (error) {
         console.error("Failed to decode or validate token:", error);
         localStorage.removeItem("token");
-        setCurrentUser(null); // Crucial: Set user to null if token is malformed/invalid
+        setCurrentUser(null); // Set user to null if token is malformed/invalid
         if (socket.current) {
           socket.current.disconnect();
           socket.current = null;
