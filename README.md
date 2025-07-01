@@ -1,4 +1,4 @@
-### Chat-application
+## Chat-application
 A real-time chat application built with Socket.IO, Node.js, and MySQL, allowing users to exchange messages instantly. This application stores user information and chat history in a MySQL database, enabling persistent and scalable communication.
 
 
@@ -17,8 +17,9 @@ A real-time chat application built with Socket.IO, Node.js, and MySQL, allowing 
 3. set up .env file and create a uploads folder
 4. Set up database
 5. Run commands
-''' bash
+```bash
 npm run dev
 node server.js
-'''
+```
+
 
