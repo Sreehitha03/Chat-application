@@ -51,13 +51,10 @@ io.on("connection", (socket) => {
     userSocketMap.get(userId).add(socket.id);
 
     console.log(`User ${username} (ID: ${userId}) logged in.`);
-    // Broadcast the updated list of UNIQUE online user details (id and username)
-    const currentOnlineUsersArray = Array.from(onlineUserDetails.values()); // Get all user objects
+   
+    const currentOnlineUsersArray = Array.from(onlineUserDetails.values());
     console.log("Broadcasting online users:", currentOnlineUsersArray);
     // Filter out the current user themselves from the list sent to the client
-    // This filter should ideally be done on the client side (Chatlist.jsx)
-    // as the server should broadcast ALL online users to everyone, and clients filter for display.
-    // For now, removing the filter here for server's "all online" list, client will filter.
     io.emit("onlineUsers", currentOnlineUsersArray);
   });
 
@@ -71,7 +68,7 @@ io.on("connection", (socket) => {
         INSERT INTO messages (sender_id, receiver_id, content, timestamp)
         VALUES (?, ?, ?, ?)
       `;
-      // Ensure db is imported and connected
+     
       await db.execute(query, [
         senderId,
         receiverId,
@@ -80,17 +77,17 @@ io.on("connection", (socket) => {
       ]);
       console.log("Message saved to database.");
 
-      // Emit to all sockets associated with the receiver
       const recipientSockets = userSocketMap.get(receiverId);
       if (recipientSockets) {
         recipientSockets.forEach((recipientSocketId) => {
-          io.to(recipientSocketId).emit("receive_message", data); // To all recipient's open tabs/devices
+          io.to(recipientSocketId).emit("receive_message", data);
         });
-        // Also send back to all sender's open tabs/devices (so sender sees message in their own window)
+
+        
         const senderSockets = userSocketMap.get(senderId);
         if (senderSockets) {
           senderSockets.forEach((senderSocketId) => {
-            io.to(senderSocketId).emit("receive_message", data); // Back to sender's open tabs
+            io.to(senderSocketId).emit("receive_message", data); 
           });
         }
       } else {
@@ -120,13 +117,13 @@ io.on("connection", (socket) => {
           userSocketMap.delete(currentUserId);
           // REMOVE FROM THE onlineUserDetails Map
           onlineUserDetails.delete(currentUserId);
-          console.log(`User ${currentUserId} logged out. Online user IDs:`, Array.from(onlineUserDetails.keys())); // Use .keys() on Map
+          console.log(`User ${currentUserId} logged out. Online user IDs:`, Array.from(onlineUserDetails.keys())); 
         } else {
             console.log(`User ${currentUserId} still has ${userSockets.size} active sockets.`);
         }
       }
     }
-    // Always re-emit the updated online user list on disconnect (if any change occurred)
+    // Always re-emit the updated online user list on disconnect
     io.emit("onlineUsers", Array.from(onlineUserDetails.values()));
   });
 });
