@@ -46,7 +46,7 @@ const Login = ({ setCurrentUser }) => {
       const { token, avatar } = response.data; 
       localStorage.setItem("token", token); 
 
-      // Decode token to get userId and username (ensure your backend adds these to the JWT payload)
+      // Decode token to get userId and username 
       const decodedToken = jwtDecode(token);
       setCurrentUser({
         id: decodedToken.userId, 
