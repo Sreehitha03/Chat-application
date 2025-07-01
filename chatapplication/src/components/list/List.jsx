@@ -6,8 +6,8 @@ import Userinfo from "../userinfo/Userinfo";
 const List = ({ currentUser, setReceiverId }) => {
   return (
     <div className="list">
-      <Userinfo currentUser={currentUser} /> {/* Pass currentUser to Userinfo */}
-      <Chatlist userId={currentUser.id} setReceiverId={setReceiverId} /> {/* Pass userId and setReceiverId to Chatlist */}
+      <Userinfo currentUser={currentUser} />
+      <Chatlist userId={currentUser.id} setReceiverId={setReceiverId} />
     </div>
   );
 };
