@@ -22,7 +22,6 @@ const Chat = ({ senderId, receiverId }) => {
       return;
     }
   
-    // 1. Initialize socket if not already
     if (!socket.current) {
       socket.current = io("http://localhost:5000");
   
@@ -39,7 +38,7 @@ const Chat = ({ senderId, receiverId }) => {
       });
     }
   
-    // 2. Remove previous listener before adding a new one (prevents stale closure)
+    // Remove previous listener before adding a new one (prevents stale closure)
     socket.current.off("receive_message");
     socket.current.on("receive_message", (data) => {
       console.log("Real-time message received:", data);
@@ -56,7 +55,7 @@ const Chat = ({ senderId, receiverId }) => {
       }
     });
   
-    // 3. Fetch chat history
+    // chat history
     const fetchChatHistory = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/chats/history/${senderId}/${receiverId}`);
@@ -89,12 +88,12 @@ const Chat = ({ senderId, receiverId }) => {
   }, [senderId, receiverId]);
   
 
-  // Scroll to the end of messages when a new one arrives (separate useEffect, good practice)
+  // Scroll 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Handle sending messages (remains the same)
+  // Handle sending messages 
   const sendMessage = () => {
     if (text.trim() && senderId && receiverId && socket.current) {
       const message = {
@@ -131,7 +130,7 @@ const Chat = ({ senderId, receiverId }) => {
         <div className="user">
           <img src="./avatar.png" alt="" />
           <div className="texts">
-            <span>{receiverId || "Select a user"}</span> {/* Display receiver's username */}
+            <span>{receiverId || "Select a user"}</span> 
             <p>Last seen {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
           </div>
         </div>
@@ -148,7 +147,7 @@ const Chat = ({ senderId, receiverId }) => {
             className={`message ${msg.senderId === senderId ? "own" : ""}`}
           >
             <div className="texts">
-              {msg.img && <img src={msg.img} alt="Sent" />} {/* If you add image sending */}
+              {msg.img && <img src={msg.img} alt="Sent" />}
               <p>{msg.text}</p>
               <span>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
@@ -167,12 +166,12 @@ const Chat = ({ senderId, receiverId }) => {
           placeholder={receiverId ? "Type a message..." : "Select a user to chat"}
           value={text}
           onChange={(e) => setText(e.target.value)}
-          onKeyPress={(e) => { // Add send on Enter key press
+          onKeyPress={(e) => { 
             if (e.key === 'Enter') {
               sendMessage();
             }
           }}
-          disabled={!receiverId} // Disable input if no receiver is selected
+          disabled={!receiverId} 
         />
         <div className="emoji">
           <img src="./emoji.png" alt="" onClick={() => setOpen((prev) => !prev)} />
