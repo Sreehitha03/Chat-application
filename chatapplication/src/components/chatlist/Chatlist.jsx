@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-// Ensure userId and setReceiverId are correctly passed from App.jsx
+// userId and setReceiverId passed from App.jsx
 const Chatlist = ({ userId, setReceiverId }) => {
   const [addMode, setAddMode] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -25,7 +25,6 @@ const Chatlist = ({ userId, setReceiverId }) => {
 
         socket.current.on("onlineUsers", (usersArray) => {
             console.log("Chatlist received online users:", usersArray); 
-            // Filter out the current user from the list before setting
             // 'usersArray' is expected to be array of objects {id, username, avatar}
             setOnlineUsers(usersArray.filter(u => u.id !== userId));
         });
@@ -64,7 +63,6 @@ const Chatlist = ({ userId, setReceiverId }) => {
     };
   }, [userId]); 
 
-  // Function to handle adding a user to the chat list (e.g., establishing a contact)
   const handleAddUserToChatList = (userObject) => {
     console.log("Attempting to add user to chat list:", userObject);
     setChatUsers((prev) => {
@@ -74,10 +72,10 @@ const Chatlist = ({ userId, setReceiverId }) => {
             return [...prev, userObject];
         }
         console.log("User already in chatUsers state.");
-        return prev; // Return previous state if user already exists
+        return prev; 
     });
     setReceiverId(userObject.id); // Automatically open chat with the newly added user
-    setAddMode(false); // Close the add user modal
+    setAddMode(false); 
     toast.success(`${userObject.username} added to your chat list!`);
   };
 
@@ -97,7 +95,6 @@ const Chatlist = ({ userId, setReceiverId }) => {
       </div>
 
       <div className="chat-users">
-        {/* Render your existing chatUsers/contacts here */}
         {chatUsers.map((user) => (
           <div
             key={user.id}
@@ -107,7 +104,6 @@ const Chatlist = ({ userId, setReceiverId }) => {
             <img src={user.avatar || "./avatar.png"} alt="User Avatar" />
             <div className="texts">
               <span>{user.username}</span>
-              {/* You'd determine if they are online based on 'onlineUsers' state */}
               <p>{onlineUsers.some(onlineUser => onlineUser.id === user.id) ? "Online" : "Offline"}</p>
             </div>
           </div>
