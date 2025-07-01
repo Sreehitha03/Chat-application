@@ -4,7 +4,7 @@ import "./addUser.css";
 const AddUser = ({ onlineUsers, allUsers, onAddUser }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Log received props for debugging
+  
   console.log("AddUser received onlineUsers:", onlineUsers);
   console.log("AddUser received allUsers:", allUsers);
 
@@ -12,12 +12,11 @@ const AddUser = ({ onlineUsers, allUsers, onAddUser }) => {
   // Ensure allUsers is an array before attempting to use it
   const usersToSearch = Array.isArray(allUsers) ? allUsers : [];
 
-  // Filter the users based on the search term (username)
+  // Filter the users based on the search term 
   const filteredUsers = usersToSearch.filter((user) => {
-    // Add a check to ensure user and user.username exist before calling toLowerCase
     if (!user || !user.username) {
       console.warn("User object or username missing in allUsers:", user);
-      return false; // Skip this user if it's malformed
+      return false; 
     }
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   });
@@ -45,10 +44,8 @@ const AddUser = ({ onlineUsers, allUsers, onAddUser }) => {
           filteredUsers.map((user) => (
             <div className="user" key={user.id}>
               <div className="detail">
-                {/* Ensure user.avatar exists or fallback to default */}
                 <img src={user.avatar || "./avatar.png"} alt="User Avatar" />
                 <span>{user.username}</span>
-                {/* Display online status only if the user is truly online */}
                 {Array.isArray(onlineUsers) && onlineUsers.some(onlineUser => onlineUser.id === user.id) && (
                     <span className="online-status" style={{color: "green", marginLeft: "10px"}}>Online</span>
                 )}
